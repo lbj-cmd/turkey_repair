@@ -479,8 +479,8 @@ class Score(turtle.Turtle):
 
     
     def game_over(self):
-        self.goto(0, 0)
-        self.write("GAME OVER", align="center", font=("Arial", 20, "bold"))
+        # 不显示"GAME OVER"文字，改为在碰撞时显示粒子效果
+        pass
 
 # 粒子效果类
 class Particle(turtle.Turtle):
@@ -671,6 +671,11 @@ score = Score()
 particle_manager = ParticleManager()
 shop = Shop()
 
+# 绘制主菜单
+main_menu.draw()
+# 更新屏幕以显示主菜单
+screen.update()
+
 # 调试日志
 print("游戏组件初始化完成")
 
@@ -679,6 +684,9 @@ previous_state = None
 game_start_time = 0
 def game_loop():
     global current_state, previous_state, game_start_time, best_path, current_path, ghost_active
+    
+    # 调试信息
+    print(f"游戏循环运行中，当前状态: {current_state}")
     
     screen.update()
     
@@ -824,6 +832,14 @@ def game_loop():
             current_time = time.time() - path_recording_start_time
             current_path.append((player.xcor(), player.ycor(), current_time))
         
+        # 检查是否到达终点线
+        if player.ycor() > 280:
+            # 进入新关卡
+            score.new_level()
+            player.reset()
+            cars.clear_cars()
+            cars.clear_obstacles()
+            
         # 无限滚动世界
         scroll_world()
         
@@ -850,6 +866,8 @@ def game_loop():
 # 点击事件处理
 def handle_click(x, y):
     global current_state
+    
+    print(f"点击事件触发，坐标: ({x}, {y})")
     
     if current_state == GameState.MAIN_MENU:
         button_clicked = main_menu.check_click(x, y)

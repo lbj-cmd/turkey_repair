@@ -22,8 +22,3 @@ class TurtlePlayer(Turtle):
     def reset(self):
         self.goto(START_POS)
 
-    def get_bounds(self):
-        # AABB碰撞检测：返回玩家的边界框
-        x, y = self.position()
-        return (x - 10, y - 10, x + 10, y + 10)
-
