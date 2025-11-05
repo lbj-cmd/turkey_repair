@@ -15,6 +15,7 @@ class TurtlePlayer(Turtle):
         self.penup()
         self.goto(START_POS)
         self.setheading(UP)
+        self.lives = 3  # Add lives attribute with default value
 
     def up(self):
         self.forward(MOVE_DISTANCE)

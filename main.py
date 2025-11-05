@@ -648,8 +648,10 @@ class Shop:
                     if upgrade["type"] == "speed_boost":
                         player.move_distance *= 1.1  # 提升10%速度
                     elif upgrade["type"] == "extra_life":
-                        # 实现额外生命逻辑（需要在游戏中添加生命系统）
-                        pass
+                        # 实现额外生命逻辑
+                        player.lives += 1  # Increase player lives by 1
+                        score.lives = player.lives  # 更新分数显示的生命值
+                        score.update_level()  # 刷新显示
                     
                     conn.commit()
                     conn.close()
@@ -816,8 +818,21 @@ def game_loop():
                 print("碰撞发生！")
                 particle_manager.create_explosion(player.xcor(), player.ycor())
 
-                current_state = GameState.GAME_OVER
-                break  # 跳出循环避免重复处理
+                # 使用生命系统
+                player.lives -= 1
+                score.lives = player.lives  # 更新分数显示的生命值
+                score.update_level()  # 刷新显示
+                if player.lives <= 0:
+                    current_state = GameState.GAME_OVER
+                    break  # 跳出循环避免重复处理
+                else:
+                    # 重置玩家位置
+                    player.reset()
+                    # 清除当前路径
+                    current_path.clear()
+                    path_recording_start_time = time.time()
+                    # 可以添加短暂的无敌时间或其他效果
+                    break  # 跳出循环避免重复处理
         
         # 记录玩家路径
         if current_state == GameState.PLAYING:
