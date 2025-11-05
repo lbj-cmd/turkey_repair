@@ -13,7 +13,7 @@ class CarManager:
     def __init__(self):
         self.all_cars = []
 
-    def make_car(self, speed_multiplier=1.0):
+    def make_car(self):
         random_car = random.randint(1, 6)
         if random_car == 1:
             rand_y = random.randint(-200, 200)
@@ -23,15 +23,8 @@ class CarManager:
             car.penup()
             car.setheading(180)
             car.goto(350, rand_y)
-            # 为汽车添加速度属性
-            car.speed = STARTING_DISTANCE * speed_multiplier
-            # 为汽车添加get_bounds方法
-            def get_bounds(self):
-                x, y = self.position()
-                return (x - 20, y - 10, x + 20, y + 10)
-            car.get_bounds = get_bounds.__get__(car, Turtle)
             self.all_cars.append(car)
 
     def move_cars(self):
-        for car in self.all_cars:
-            car.forward(car.speed)
+        for cars in self.all_cars:
+            cars.forward(STARTING_DISTANCE)
